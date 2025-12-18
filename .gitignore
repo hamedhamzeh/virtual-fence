@@ -1,0 +1,41 @@
+# Datasets
+Datasets/
+
+# Python & System
+__pycache__/
+*.py[cod]
+*$py.class
+.DS_Store
+Thumbs.db
+
+# Environments
+venv/
+.venv/
+env/
+.env
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+
+# YOLO / Ultralytics
+runs/
+results/
+
+# Trained Models (optional - uncomment if you want to track models)
+# trained_models/
+*.pt
+*.pth
+*.onnx
+
+# Media Files
+*.mp4
+*.avi
+*.mkv
+*.jpg
+*.png
+*.jpeg
+
+# Project specific
+output_tracked_*.mp4
