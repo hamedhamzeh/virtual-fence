@@ -7,7 +7,7 @@ This project implements a computer vision pipeline for detecting and tracking pe
 - **Object Detection**: Uses YOLOv8 for high-performance person detection.
 - **Object Tracking**: Implements SimpleSORT (Simple Online and Realtime Tracking) to maintain object identities across frames.
 - **Visualizations**: Draws bounding boxes and track IDs on the output video.
-- **Filtering**: (Optional) Capabilities to filter detections based on box area, aspect ratio, etc.
+- **Filtering**: TODO: Capabilities to filter detections based on box area, aspect ratio, etc.
 
 ## Project Structure
 
@@ -15,6 +15,7 @@ This project implements a computer vision pipeline for detecting and tracking pe
 - `tracker.py`: Implementation of the SimpleSORT tracker logic.
 - `visualizer.py`: Utility for drawing tracks and detection boxes on frames.
 - `filters.py`: Contains logical filters for refining detection results.
+- `results/`: Directory for storing output videos and results.
 - `utils/`: Helper functions.
 - `trained_models/`: Directory for storing YOLOv8 model weights (e.g., `best-40.pt`).
 
