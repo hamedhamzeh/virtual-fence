@@ -7,17 +7,27 @@ This project implements a computer vision pipeline for detecting and tracking pe
 - **Object Detection**: Uses YOLOv8 for high-performance person detection.
 - **Object Tracking**: Implements SimpleSORT (Simple Online and Realtime Tracking) to maintain object identities across frames.
 - **Visualizations**: Draws bounding boxes and track IDs on the output video.
-- **Filtering**: TODO: Capabilities to filter detections based on box area, aspect ratio, etc.
+- **Filtering**: (TODO) Capabilities to filter detections based on box area, aspect ratio, etc.
 
 ## Project Structure
 
 - `inference.py`: Main script to run the detection and tracking pipeline.
 - `tracker.py`: Implementation of the SimpleSORT tracker logic.
 - `visualizer.py`: Utility for drawing tracks and detection boxes on frames.
-- `filters.py`: Contains logical filters for refining detection results.
+- `filters.py`: (TODO) Contains logical filters for refining detection results.
 - `results/`: Directory for storing output videos and results.
 - `utils/`: Helper functions.
 - `trained_models/`: Directory for storing YOLOv8 model weights (e.g., `best-40.pt`).
+
+## Training Pipeline and Aggregated dataset:
+
+- Google drive link: https://drive.google.com/drive/folders/1SRhG4wKo4ld1BauXciEkSQVdjiEp-Ps3?usp=sharing
+- Dataset is the combination of these sources:
+    . https://motchallenge.net/data/MOT20/
+    . https://motchallenge.net/data/MOT17Det/
+    . https://app.roboflow.com/vcloudai/counting-2jyrc/4
+    . https://universe.roboflow.com/crowd-zuf0q/crowd-5ropi/dataset/1
+    . https://universe.roboflow.com/crowd-counting-ssra0/crowd-counting-gdq7w/dataset/2
 
 ## Prerequisites
 
