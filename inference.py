@@ -123,9 +123,9 @@ def run_inference_with_tracking(
 
 
 if __name__ == "__main__":
-    model_path = "trained_models/best-40.pt"
+    model_path = "trained_models/BestS.pt"
     input_video_path = "input.mp4"
-    output_video_path = "output_tracked_simple_sort.mp4"
+    output_video_path = "output_tracked_simple_sort_S.mp4"
 
     # Optionally create a detection filter
     # custom_filter = DetectionFilter(min_box_area=0, min_aspect_ratio=0.5, min_track_duration=1)
@@ -138,7 +138,7 @@ if __name__ == "__main__":
         input_video_path=input_video_path,
         output_video_path=output_video_path,
         conf_threshold=0.2,
-        iou_threshold=0.5,
+        iou_threshold=0.4,
         max_det=300,
         show_labels=True,
         line_width=2,
