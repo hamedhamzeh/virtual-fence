@@ -7,16 +7,28 @@ class KalmanBoxTracker:
     count = 0
     def __init__(self, bbox, max_history=5):
         self.kf = KalmanFilter(dim_x=7, dim_z=4)
-        self.kf.F = np.array([[1,0,0,0,1,0,0],[0,1,0,0,0,1,0],[0,0,1,0,0,0,1],
-                              [0,0,0,1,0,0,0],[0,0,0,0,1,0,0],[0,0,0,0,0,1,0],
+        self.kf.F = np.array([[1,0,0,0,1,0,0],
+                              [0,1,0,0,0,1,0],
+                              [0,0,1,0,0,0,1],
+                              [0,0,0,1,0,0,0],
+                              [0,0,0,0,1,0,0],
+                              [0,0,0,0,0,1,0],
                               [0,0,0,0,0,0,1]])
-        self.kf.H = np.array([[1,0,0,0,0,0,0],[0,1,0,0,0,0,0],[0,0,1,0,0,0,0],
+        self.kf.H = np.array([[1,0,0,0,0,0,0],
+                              [0,1,0,0,0,0,0],
+                              [0,0,1,0,0,0,0],
                               [0,0,0,1,0,0,0]])
-        self.kf.R[2:,2:] *= 10.
-        self.kf.P[4:,4:] *= 1000.
-        self.kf.P *= 10.
-        self.kf.Q[-1,-1] *= 0.01
-        self.kf.Q[4:,4:] *= 0.01
+
+        self.kf.R = np.diag([10, 10, 100, 200])
+
+        self.kf.Q *= 0.01
+        self.kf.Q[4:, 4:] *= 10.0
+        self.kf.Q[2:4,2:4] *= 5.0
+        # self.kf.Q[-1, -1] *= 0.01
+
+        self.kf.P *= 20.
+        self.kf.P[4:,4:] *= 2000.
+
         self.kf.x[:4] = self.convert_bbox_to_z(bbox)
 
         self.time_since_update = 0
@@ -30,16 +42,6 @@ class KalmanBoxTracker:
         self.original_boxes.append(bbox)
         self.confidences = deque(maxlen=30)
 
-    def update(self, bbox, confidence=None):
-        self.time_since_update = 0
-        self.history = []
-        self.hits += 1
-        self.hit_streak += 1
-        self.kf.update(self.convert_bbox_to_z(bbox))
-        self.original_boxes.append(bbox)
-        if confidence is not None:
-            self.confidences.append(confidence)
-
     def predict(self):
         if ((self.kf.x[6]+self.kf.x[2]) <= 0):
             self.kf.x[6] *= 0.0
@@ -51,10 +53,20 @@ class KalmanBoxTracker:
         self.history.append(self.convert_x_to_bbox(self.kf.x))
         return self.history[-1]
 
+    def update(self, bbox, confidence=None):
+        self.time_since_update = 0
+        self.history = []
+        self.hits += 1
+        self.hit_streak += 1
+        self.kf.update(self.convert_bbox_to_z(bbox))
+        self.original_boxes.append(bbox)
+        if confidence is not None:
+            self.confidences.append(confidence)
+
     def get_state(self):
         return self.convert_x_to_bbox(self.kf.x)
 
-    def get_smoothed_box(self, window_size=5):
+    def get_smoothed_box(self, window_size=10):
         if len(self.original_boxes) == 0:
             return self.get_state()[0]
         recent = list(self.original_boxes)[-window_size:]
