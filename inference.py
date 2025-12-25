@@ -11,6 +11,8 @@ from ultralytics import YOLO
 from tracker import SimpleSORT
 from visualizer import TrackVisualizer
 # from filters import DetectionFilter
+from counter_zone import ZoneCounter
+
 
 from torchvision.ops import nms
 
@@ -24,7 +26,8 @@ def run_inference_with_tracking(
     show_labels=True,
     line_width=2,
     detection_filter=None,
-    tracker=None
+    tracker=None,
+    zone_counter=False
 ):
     # Load YOLOv8 model
     print(f"Loading model from {model_path}...")
@@ -39,6 +42,19 @@ def run_inference_with_tracking(
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+    if zone_counter:
+        zone_counter = ZoneCounter(
+            frame_width=width,
+            frame_height=height,
+            margin_top=150,
+            margin_left=200,
+            margin_right=200,
+            margin_bottom=150,
+            fps=fps,
+            apply_grace_after_sec=0.1,
+            grace_frames=5
+        )
 
     # VideoWriter
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
@@ -98,6 +114,9 @@ def run_inference_with_tracking(
                     show_label=show_labels and tracker is not None
                 )
 
+        if zone_counter:
+            zone_counter.step(frame, tracked_objects)
+
         # Write frame
         out.write(frame)
         frame_count += 1
@@ -123,7 +142,7 @@ def run_inference_with_tracking(
 
 
 if __name__ == "__main__":
-    model_path = "trained_models/BestS.pt"
+    model_path = "trained_models/best_M.pt"
     input_video_path = "input.mp4"
     output_video_path = "output_tracked_simple_sort_S.mp4"
 
@@ -141,7 +160,8 @@ if __name__ == "__main__":
         iou_threshold=0.4,
         max_det=300,
         show_labels=True,
-        line_width=2,
+        line_width=1,
         detection_filter=None,  # or pass custom_filter
-        tracker=tracker
+        tracker=tracker,
+        zone_counter=True
     )
