@@ -2,6 +2,9 @@
 
 This project implements a computer vision pipeline for detecting and tracking people in video streams using YOLOv8 and a custom SimpleSORT tracker. It is designed for applications like virtual fencing and person counting.
 
+Below you can see a demo of the current system in action. The video shows people moving through the scene and entering the predefined zone. In this particular clip, the total number of people entering the zone is 15, and the count detected by the current setup using YOLOv8 and SimpleSORT is 12. You can watch the full video of this demo [here](https://raw.githubusercontent.com/hamedhamzeh/virtual-fence/c96f8a6d4e9ef64d52f287d6369a60052aa866a0/results/YoloV8_S_with-zone.mp4).
+
+
 <div align="center">
   <a href="URL_HERE">
     <img src="https://raw.githubusercontent.com/hamedhamzeh/virtual-fence/c96f8a6d4e9ef64d52f287d6369a60052aa866a0/results/Demo.gif"
